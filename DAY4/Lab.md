@@ -35,7 +35,7 @@ This command loads the SPICE netlist and executes the defined transient or DC sw
 #### 🖼️ Output Graph (Initial Simulation)
 
 <p align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/ba0c15b9-3ef6-49d9-9018-b6e4cba38974" alt="Inverter noise margin simulation output">
+  <img width="800" src="https://github.com/CircuitCrafter07/Week-4/blob/main/DAY4/Screenshot%20from%202025-10-17%2011-50-31.png">
 </p>
 
 This plot represents the **output voltage vs. input voltage**, showcasing the CMOS inverter’s transition behavior.
@@ -57,7 +57,7 @@ This command plots the transfer characteristic curve — a key step in determini
 #### 🧩 Output Plot
 
 <p align="center">
-  <img width="800" src="https://github.com/user-attachments/assets/99d75838-4382-4fbb-9029-7983eeab214b" alt="Inverter VTC plot">
+  <img width="800" src="https://github.com/CircuitCrafter07/Week-4/blob/main/DAY4/Screenshot%20from%202025-10-17%2011-50-24.png">
 </p>
 
 The curve demonstrates:
