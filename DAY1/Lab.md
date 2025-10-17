@@ -49,7 +49,7 @@ These parameters directly influence the transistor’s **current-driving capabil
 When the simulation runs successfully, Ngspice outputs the **drain current characteristics** for multiple gate voltages (V<sub>GS</sub>).
 
 ### ✅ Example Output Window:
-<img width="915" height="680" alt="Ngspice output" src="https://github.com/user-attachments/assets/2c1d8b44-4a66-4c26-8ee1-40b0fd9fa74c" />
+<img width="915" height="680" alt="Ngspice output" src="https://github.com/CircuitCrafter07/Week-4/blob/main/DAY1/Screenshot%20from%202025-10-17%2016-32-04.png" />
 
 ---
 
