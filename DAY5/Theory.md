@@ -1,80 +1,112 @@
 # ⚙️ RISC-V SoC Tapeout Program — VSD  
-## 🪶 CMOS Power Supply & Device Variation Robustness Evaluation  
+## 🪶 CMOS Power Supply & Device Variation Robustness — Lab Evaluation  
 
 ---
 
-### ⚡ **1. Power Supply Variation**
+### 🧪 **1. Power Supply Variation**
 
-#### 📘 **Key Insights**
-1. **Technology Scaling Impact**
-   - As we move from **250nm** to **smaller nodes (e.g., 20nm)**, the supply voltage must scale down accordingly.
-   - Example: **1.0V → 0.7V**  
-     This helps maintain power efficiency but introduces **performance and reliability trade-offs**.
+#### 🧰 **Simulation Setup**
+Run the following command to simulate inverter performance under **supply voltage variation**:
 
-2. **Low-Voltage CMOS Operation**
-   - **CMOS inverters** can operate reliably at voltages as low as **0.5V**.
-   - **Advantages:**
-     - 🔹 Up to **50% improvement** in voltage gain.
-     - 🔹 Around **90% reduction** in energy consumption.
-   - **Disadvantages:**
-     - ⚠️ Reduced drive strength may lead to **slower switching speeds**.
-     - ⚠️ **Incomplete charging/discharging** of load capacitances impacts performance.
+```bash
+$ ngspice day5_inv_supplyvariation_Wp1_Wn036.spice
+```
 
----
+This experiment investigates the impact of **supply voltage (V<sub>DD</sub>)** changes on:
+- Inverter transfer characteristics  
+- Switching delay  
+- Noise margins  
+- Power efficiency  
 
-### 🧩 **2. Device Variation**
+#### 📸 **Waveform Results**
+![5 -3](https://github.com/user-attachments/assets/9902e77e-99b2-41c8-85f2-3396a0e6ab4c)  
+![5 -4](https://github.com/user-attachments/assets/b985560f-fadc-44df-bb26-d7e6047360db)
 
-#### 🧪 **Primary Sources of Variation**
+#### 📊 **Observations**
+| Parameter | Behavior |
+|------------|-----------|
+| **Switching Threshold** | Shifts lower as supply voltage decreases |
+| **Delay** | Increases at lower V<sub>DD</sub> due to weaker drive current |
+| **Energy Consumption** | Reduces significantly at lower voltages |
+| **Logic Robustness** | Slightly decreases as V<sub>DD</sub> approaches threshold voltage levels |
 
-##### a. **Etching Process Variation**
-- Determines **structural dimensions** such as transistor **width** and **height**.
-- Any deviation directly affects **propagation delay** and **device performance**.  
-- Key physical layout layers:
-  - 🟩 **P-diffusion** – Defines PMOS gate width  
-  - 🟨 **N-diffusion** – Defines NMOS gate width  
-  - 🟥 **Poly-silicon** – Defines **gate length** (i.e., technology node)  
-  - 🟦 **Metal layers** – Carry interconnect signals  
-  - ⬛ **Contacts** – Represent via connections (typically shown as black crosses)
-
-##### b. **Oxide Thickness Variation**
-- Ideally, the **gate oxide** has a uniform thickness across all transistors.  
-- Practically, variations occur **along the gate length** or **between transistors**, causing:
-  - Changes in **capacitance (C<sub>ox</sub>)**
-  - Shifts in **threshold voltage (V<sub>th</sub>)**
-  - Variations in **drain current (I<sub>d</sub>)**
+**Conclusion:**  
+Reduced supply voltage enhances power efficiency but at the cost of speed and noise margin stability.
 
 ---
 
-### 💡 **3. Device Strength Definitions**
+### ⚙️ **2. Device Variation**
 
-| Configuration | Resistance | Device Size | Remarks |
-|----------------|-------------|--------------|----------|
-| **Strong PMOS** | Low | Wider | Improves pull-up strength |
-| **Weak PMOS** | High | Narrower | Slower rise time |
-| **Strong NMOS** | Low | Wider | Enhances pull-down capability |
-| **Weak NMOS** | High | Narrower | Increases delay |
+#### 🧰 **Simulation Setup**
+Run the following command to evaluate inverter behavior under **device geometry variation** (Wp/Wn ratio):
+
+```bash
+$ ngspice day5_inv_devicevariation_wp7_wn042.spice
+```
+
+This test studies how changing **transistor widths** affects:
+- Voltage transfer characteristics (VTC)  
+- Switching thresholds  
+- Noise margins and signal stability  
+
+#### 📸 **Waveform Results**
+![5 -1](https://github.com/user-attachments/assets/f65f1741-498e-4a3f-ae23-c6011e6205ce)
+
+To view the transfer characteristic, use:
+```bash
+$ plot out vs in
+```
+
+**Output:**
+![5 -2](https://github.com/user-attachments/assets/b40c62ce-eb0a-4d49-97ba-25cc639f7497)
+
+#### 📊 **Observations**
+| Parameter | Effect of Device Variation |
+|------------|----------------------------|
+| **Threshold Voltage (V<sub>M</sub>)** | Shifts depending on PMOS/NMOS width ratio |
+| **Noise Margins** | Improve when device sizing is balanced |
+| **Switching Speed** | Faster with stronger NMOS or PMOS transistors |
+| **Power Consumption** | Increases slightly with wider transistors |
+
+**Conclusion:**  
+Proper selection of **Wp/Wn ratio** helps balance speed, power, and noise margins — crucial for robust CMOS inverter design.
 
 ---
 
-### 🔍 **4. Inverter Chain Behavior**
+### 🔍 **3. Comparative Analysis**
 
-- **Intermediate gates**: Show **consistent structural patterns**, with repeated minor distortions.  
-- **End gates**: Differ in layout due to **external loading or routing variations**.  
-- These differences influence **signal delay** and **output integrity**.
-
----
-
-### 📈 **5. Performance Metrics**
-
-| Parameter | Typical Range | Variation | Description |
-|------------|----------------|------------|--------------|
-| **Switching Threshold (V<sub>M</sub>)** | 0.7V – 1.4V | ±0.35V | Acceptable logic transition range |
-| **Noise Margin High (NM<sub>H</sub>)** | 2.1V – 2.5V | ~400mV | Tolerance for high-level noise |
-| **Noise Margin Low (NM<sub>L</sub>)** | 0V – 0.3V | ~300mV | Tolerance for low-level noise |
+| Parameter | Power Supply Variation | Device Variation |
+|------------|------------------------|------------------|
+| **VTC Shift** | Shifts downward with lower V<sub>DD</sub> | Controlled by geometry ratio |
+| **Delay** | Increases as voltage drops | Decreases with wider NMOS |
+| **Noise Margin** | Slightly reduced at low voltage | Improved with balanced sizing |
+| **Power Efficiency** | Enhanced at lower voltage | Decreases with larger device sizes |
 
 ---
 
-### 🧠 **Summary**
-Modern CMOS design involves balancing **power efficiency**, **performance**, and **robustness** against process-induced variations. As technology nodes scale, understanding these physical effects becomes crucial for reliable **RISC-V SoC** implementation and successful **tapeout readiness**.
+### 🧠 **4. Summary**
+
+- **Supply voltage variation** influences switching speed, energy efficiency, and logic stability.  
+- **Device geometry variation** affects drive strength and noise margins.  
+- Together, these factors define the **robustness** and **reliability** of CMOS inverters in advanced **RISC-V SoC** fabrication.  
+
+---
+
+### 🚀 **5. Next Steps**
+- Analyze **dynamic power vs. V<sub>DD</sub>** using parametric sweeps.  
+- Evaluate **delay vs. transistor ratio** for optimal sizing.  
+- Document **power-delay tradeoff curves** for final tapeout optimization.  
+
+---
+
+### 🧩 **Supporting Files**
+- `day5_inv_supplyvariation_Wp1_Wn036.spice`  
+- `day5_inv_devicevariation_wp7_wn042.spice`  
+
+---
+
+### 🏁 **Conclusion**
+Understanding **power supply** and **device variation** effects is essential for designing energy-efficient and reliable digital circuits.  
+This lab validates theoretical principles of CMOS inverter design and forms the foundation for **robust RISC-V SoC implementation**.
 
 ---
