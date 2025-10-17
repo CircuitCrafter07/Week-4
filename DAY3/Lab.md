@@ -36,7 +36,7 @@ $ plot out vs in
 
 #### **Simulation Output:**
 
-![VTC Graph](https://github.com/user-attachments/assets/3077606d-f1dd-4c13-bedd-5b8f4349d5f3)
+![VTC Graph](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY3/Screenshot%20from%202025-10-17%2009-35-27.png)
 
 This plot shows the **VTC curve**, which highlights:
 - The **switching threshold voltage (V<sub>M</sub>)**
