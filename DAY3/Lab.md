@@ -51,7 +51,7 @@ This plot shows the **VTC curve**, which highlights:
 ```bash
 $ ngspice day3_inv_tran_Wp084_Wn036.spice
 ```
-![Transient Output 1](https://github.com/user-attachments/assets/324f4f5b-cdd9-4580-a177-1e4697cfc7a6)
+![Transient Output 1](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY3/Screenshot%20from%202025-10-17%2016-43-09.png)
 This simulation analyzes the **dynamic response** of the inverter when subjected to a time-varying input (e.g., square wave).
 
 ---
@@ -65,7 +65,7 @@ $ plot out vs time in
 #### **Simulation Output:**
 
 
-![Transient Output 2](https://github.com/user-attachments/assets/0578767b-16db-4ac0-9f1a-f537d059bc34)
+![Transient Output 2](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY3/Screenshot%20from%202025-10-17%2009-42-26.png)
 
 These waveforms show:
 - **Input (Vin)** and **Output (Vout)** signals over time  
