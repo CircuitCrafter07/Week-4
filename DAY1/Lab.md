@@ -67,7 +67,7 @@ This command plots the **current through the VDD source branch**, which represen
 
 ### 🧩 Output Plot
 
-<img width="1422" height="845" alt="Id vs Vds plot" src="https://github.com/user-attachments/assets/1528836f-1060-4f95-9f94-81cb72179516" />
+<img width="1422" height="845" alt="Id vs Vds plot" src="https://github.com/CircuitCrafter07/Week-4/blob/main/DAY1/TT_case.png" />
 
 ---
 
