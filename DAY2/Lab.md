@@ -1,47 +1,36 @@
 # 🌍 RISC-V SoC Tapeout Program — VSD  
-## ⚡ NMOS Drain Current (Id) vs Drain-to-Source Voltage (Vds) — Simulation Lab  
+## ⚡ Velocity Saturation and CMOS Inverter VTC — Simulation Lab  
 
 ---
 
-### 🧪 **Experiment: Id–Vds Simulation of an NMOS (nfet)**
+### 🧪 **Experiment 1: Ids–Vds for Short-Channel Device**
 
-This experiment demonstrates the **Id–Vds characteristics** of an **NMOS transistor** using **ngspice** simulations.  
-It verifies the theoretical behavior across **linear** and **saturation regions**.
+This experiment analyzes **drain current (Ids)** versus **drain-to-source voltage (Vds)** for a **short-channel NMOS transistor**, highlighting **velocity saturation effects**.
 
 ---
 
-### ⚙️ **Step 1: Clone the Project Repository**
+### ⚙️ **Step 1: Run ngspice Simulation**
 
-Clone the official **VSD Sky130 Circuit Design Workshop** GitHub repository to access design and SPICE simulation files.
+Navigate to the design directory and execute the simulation file for the short-channel NMOS.
 
 ```bash
-$ git clone https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
 $ cd sky130CircuitDesignWorkshop/design/
-```
-
----
-
-### ⚙️ **Step 2: Run ngspice Simulation**
-
-Use the provided `.spice` file to simulate **drain current (Id)** vs **drain-to-source voltage (Vds)**.
-
-```bash
-$ ngspice day1_nfet_idvds_L2_W5.spice
+$ ngspice day2_nfet_idvds_L015_W039.spice
 ```
 
 ---
 
 ### 📈 **Simulation Output**
 
-The simulation initializes ngspice, processes the circuit netlist, and generates the **I–V characteristics** of the NMOS device.
+The ngspice output displays the transistor’s behavior as **Vds** varies under different **Vgs** conditions.
 
-<img width="915" height="680" alt="ngspice-output" src="https://github.com/user-attachments/assets/2c1d8b44-4a66-4c26-8ee1-40b0fd9fa74c" />
+![day2-3](https://github.com/user-attachments/assets/299475e2-6646-4808-83a4-99cfd85c66fd)
 
 ---
 
-### 🧮 **Step 3: Plot Id vs Vds Curve**
+### 🧮 **Step 2: Plot Ids vs Vds Curve**
 
-To visualize the transistor’s behavior, plot the drain current with respect to drain-to-source voltage.
+Use the following command to visualize the drain current plot:
 
 ```bash
 $ plot -vdd#branch
@@ -51,30 +40,66 @@ $ plot -vdd#branch
 
 ### 📊 **Graph Output**
 
-This plot shows how **Id** varies with **Vds** for different **Vgs** values — illustrating the transition between **linear** and **saturation** regions.
+The plotted curve demonstrates how **Ids** initially increases linearly with **Vds**, then gradually saturates due to **velocity saturation**.
 
-<img width="1422" height="845" alt="id-vds-plot" src="https://github.com/user-attachments/assets/1528836f-1060-4f95-9f94-81cb72179516" />
+![day2-1](https://github.com/user-attachments/assets/4160a1ef-7983-4cef-8599-45cffdd656a6)
+
+---
+
+### 🧪 **Experiment 2: Ids–Vds Without Vdd Sweep**
+
+This test removes the **Vdd sweep** parameter to isolate the **Ids–Vds** dependence at fixed supply voltage conditions.
+
+```bash
+$ ngspice day2_nfet_idvgs_L015_W039.spice
+```
+
+---
+
+### 📈 **Simulation Output**
+
+The SPICE output file shows Ids–Vds characteristics under specific **Vgs** values for short-channel NMOS.
+
+![day2-4](https://github.com/user-attachments/assets/21c84e62-de8e-4882-aed8-d9dd557eeef9)
+
+---
+
+### 🧮 **Step 2: Plot Ids Curve (Fixed Vgs)**
+
+Use the following command to generate the plot:
+
+```bash
+$ plot -vdd#branch
+```
+
+---
+
+### 📊 **Graph Output**
+
+This plot reveals that for short-channel devices:  
+- **Current saturates early**, even at moderate **Vds** values.  
+- The **saturation region** is limited by **carrier velocity** rather than channel pinch-off.  
+
+![day2-2](https://github.com/user-attachments/assets/00f2e170-de56-42b8-b7c4-0025dfd1680d)
 
 ---
 
 ### 🧭 **Analysis**
 
-- For **small Vds**, Id increases **linearly** → NMOS in **triode (linear)** region.  
-- As **Vds** reaches \( V_{GS} - V_{th} \), **pinch-off** occurs, and Id saturates.  
-- Beyond that, **current remains nearly constant**, confirming the **saturation** region of operation.  
+- **Velocity saturation** dominates at submicron dimensions, reducing current gain compared to long-channel MOSFETs.  
+- The **Ids–Vds** relationship deviates from the quadratic law, indicating **nonlinear mobility** effects.  
+- SPICE simulations help visualize **realistic short-channel behavior** beyond ideal models.
 
 ---
 
 ### ✅ **Conclusion**
 
-This simulation verifies that the **ngspice** environment accurately models NMOS device characteristics:  
-- Id–Vds curve matches theoretical expectations.  
-- The transition from **linear** to **saturation** operation is clearly visible.  
-- This is a foundational step in understanding **MOSFET behavior** within analog and digital circuits.
+This lab confirms that **velocity saturation** limits current in short-channel transistors, leading to deviation from ideal square-law behavior.  
+Such effects are critical in **deep-submicron CMOS design**, impacting speed and power performance.
 
 ---
 
 🧠 **Pro Tip:**  
-You can modify **W/L ratios** and **supply voltages** in the `.spice` file to explore how **device geometry** affects the transistor’s current characteristics.
+Try modifying **L (channel length)** and **W (width)** parameters in the `.spice` files to observe how **velocity saturation onset** changes with geometry.
 
 ---
