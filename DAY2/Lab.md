@@ -24,7 +24,7 @@ $ ngspice day2_nfet_idvds_L015_W039.spice
 
 The ngspice output displays the transistor’s behavior as **Vds** varies under different **Vgs** conditions.
 
-![day2-3](https://github.com/user-attachments/assets/299475e2-6646-4808-83a4-99cfd85c66fd)
+![day2](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY2/Screenshot%20from%202025-10-17%2009-45-17.png)
 
 ---
 
