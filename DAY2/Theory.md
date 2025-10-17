@@ -1,172 +1,158 @@
 # 🌍 RISC-V SoC Tapeout Program — VSD  
-## ⚡ Fundamentals of NMOS Drain Current (Id) vs Drain-to-Source Voltage (Vds)
+## ⚡ Velocity Saturation and CMOS Inverter VTC  
 
 ---
 
-### ✨ **Introduction to Circuit Design & SPICE Simulations**
+### 🌶️ **SPICE Simulation for Velocity Saturation and Lower Technology Nodes**
 
-#### 🔹 Why Do We Need SPICE Simulations?
+<img width="2602" height="1730" alt="velocity-saturation" src="https://github.com/user-attachments/assets/97ce8575-fd6a-4071-b149-a3697ba50085" />  
 
-**SPICE (Simulation Program with Integrated Circuit Emphasis)** is an essential tool for **designing and analyzing electronic circuits** before physical implementation.  
-It allows engineers to:
-
-- Predict real-world circuit behavior  
-- Identify design flaws early  
-- Optimize device performance  
-- Avoid costly and time-consuming prototyping  
-
-SPICE supports **analog, digital, and mixed-signal** simulations — enabling accurate prediction of voltage, current, power, and timing characteristics under various conditions.
+This simulation demonstrates **velocity saturation** in short-channel MOSFETs and explores **CMOS inverter voltage transfer characteristics (VTC)**.  
 
 ---
 
-### ⚛️ **NMOS Device Overview**
+### ⚙️ **MOSFET Operating Regions**
 
-**n-Channel Metal-Oxide Semiconductor (NMOS)** is a type of MOSFET where current is carried by **electrons**.  
-
-#### 📘 Structure and Key Components
-1. **Source (S) & Drain (D):**  
-   Two heavily doped *n+ regions* that enable electron flow when the device is ON.
-
-2. **Gate (G):**  
-   The control terminal — typically made of **polycrystalline silicon (Poly-Si)** — where input voltage is applied.
-
-3. **Gate Oxide (SiO₂):**  
-   A thin insulating layer separating gate and substrate. It forms the **electric field** that controls the channel without allowing DC conduction.
-
-4. **Body (B):**  
-   The **p-type substrate**, acting as the foundation and influencing the **threshold voltage (Vₜ)**.
-
-<br>
-
-![NMOS Structure](https://github.com/user-attachments/assets/e1dc65f1-f637-4230-8f70-9f466bdd5edb)
-
----
-
-### ⚙️ **Working Principle of NMOS**
-
-1. At **VGS = 0**, all terminals are grounded — no current flows.  
-2. The p-type substrate forms **reverse-biased p–n junctions** (body-to-source and body-to-drain).  
-3. The **source–drain resistance** is extremely high.  
-4. When a **positive VGS** is applied:  
-   - Electrons accumulate under the gate.  
-   - A conducting **n-channel** forms (known as **inversion**).  
-5. The **threshold voltage (Vt)** is the gate voltage at which this strong inversion occurs.  
-6. Increasing VGS beyond Vt → enhances conductivity.  
-7. Electrons flow from **source → drain**, and the **gate voltage controls current magnitude**.
-
-![NMOS Channel Formation](https://github.com/user-attachments/assets/fc3b4477-4da4-4077-8856-bed78b2d588f)
-
----
-
-### ⚡ **Threshold Voltage & Body Effect**
-
-Applying a **positive body bias (VSB > 0)** widens the depletion region, requiring a higher gate voltage to achieve inversion — this increases **Vt** (body effect).
-
-![Body Effect](https://github.com/user-attachments/assets/12fe3143-1d80-4a28-b343-d2fca1e98e98)
-
-#### 🧮 Threshold Voltage Equation
-
-\[
-V_t = V_{t0} + \gamma \left( \sqrt{|{-2\phi_F + V_{SB}}|} - \sqrt{|{-2\phi_F}|} \right)
-\]
-
----
-
-### 📘 **Important Concepts**
-
-#### 🔹 Strong Inversion  
-Occurs when **VGS > Vt** and a dense **electron channel** forms, allowing substantial current flow.
-
-#### 🔹 Subthreshold Conduction  
-When **VGS < Vt**, a small leakage current flows due to **minority carrier diffusion** — increasing exponentially as VGS approaches Vt.
-
----
-
-### ⚙️ **Regions of Operation**
-
-#### 🧩 NMOS in Triode (Linear) Region
-
-When \( V_{DS} \ll (V_{GS} - V_{th}) \), the transistor behaves as a **voltage-controlled resistor**.
-
-\[
-I_D = \mu_n C_{ox} \frac{W}{L} (V_{GS} - V_{th}) V_{DS}
-\]
-
-#### ⚙️ Effective On-Resistance
-
-\[
-R_{on} = \frac{1}{\mu_n C_{ox} \frac{W}{L} (V_{GS} - V_{th})}
-\]
-
----
-
-### 🌊 **Drift Current Theory**
-
-**Drift current** is caused by the movement of charge carriers under an **electric field**.
-
-- Channel current at any point \( x \):  
+#### **1️⃣ Linear Region**
+- MOSFET behaves as a **voltage-controlled resistor**.  
+- **Condition:**  
   \[
-  I_D = -v_n(x) \cdot Q_i(x) \cdot W
+  V_{DS} < V_{GS} - V_T
   \]
-- Electron drift velocity:  
+- **Current Equation:**  
   \[
-  v_d = \mu E
+  I_D = k_n \left[(V_{GS} - V_T)V_{DS} - \frac{V_{DS}^2}{2}\right]
   \]
 
-![Drain Current Model](https://github.com/user-attachments/assets/050a70cc-4e19-4975-a2e4-9d956de0c41d)
+---
+
+#### **2️⃣ Saturation Region**
+- MOSFET acts as a **current source**.  
+- **Condition:**  
+  \[
+  V_{DS} \geq V_{GS} - V_T
+  \]
+- **Current Equation:**  
+  \[
+  I_D = \frac{k_n}{2} \frac{W}{L}(V_{GS} - V_T)^2 [1 + \lambda V_{DS}]
+  \]
 
 ---
 
-### ⚡ **Saturation (Pinch-Off) Region**
+### 🧮 **Quadratic Dependence**
 
-At **pinch-off**, the channel narrows near the drain and current saturates.  
-This marks the transition from **linear** to **saturation** operation.
+When \( V_{GS} \) exceeds the threshold voltage \( V_T \), an **inversion channel** forms under the gate.  
+The current follows a **square-law dependence**:
 
 \[
-V_{DS(sat)} = V_{GS} - V_{th}
+I_D \propto (V_{GS} - V_T)^2
 \]
 
-![Pinch-Off](https://github.com/user-attachments/assets/41e6c87f-22f0-425f-838f-12a6d427a0b4)
+---
+
+### ⚡ **Velocity Saturation**
+
+At **deep submicron** technology nodes, the **carrier velocity** no longer increases linearly with electric field due to high field effects — a phenomenon called **velocity saturation**.
+
+- **Effect:** Limits \( I_D \) below square-law prediction.  
+- **Modified Saturation Current Equation:**
+
+\[
+I_{Dsat} = W C_{ox} (V_{GS} - V_T) v_{sat}
+\]
+
+where \( v_{sat} \) = carrier saturation velocity.  
 
 ---
 
-### 🧨 **SPICE Simulations**
+### 🧩 **CMOS Inverter — Voltage Transfer Characteristics (VTC)**
 
-SPICE is used to **numerically solve** circuit equations and produce characteristic **I–V curves** and **waveforms** based on device parameters.
-
-![SPICE Overview](https://github.com/user-attachments/assets/7b85e4be-2f63-4ceb-a994-bd513d441bc3)
-
-#### 🧩 Common NMOS SPICE Parameters
-| Parameter | Description |
-|------------|-------------|
-| VTO | Threshold Voltage |
-| KP | Transconductance Parameter |
-| GAMMA | Body Effect Coefficient |
-| μn | Electron Mobility |
-| Cox | Oxide Capacitance per Unit Area |
-| W/L | Width-to-Length Ratio |
-| λ | Channel Length Modulation |
+The **CMOS inverter** consists of an **NMOS pull-down** and **PMOS pull-up** network.  
+The **VTC** curve represents how output voltage \( V_{out} \) changes with input voltage \( V_{in} \).
 
 ---
 
-### 💻 Example: SPICE Netlist
+#### 🔹 **NMOS as a Switch**
+- **Cutoff:** \( V_{GS} < V_T \) → NMOS OFF → open switch (no current flow).  
+- **Linear/Triode:** \( V_{GS} > V_T \), \( V_{DS} \) small → NMOS ON → low resistance conduction.  
+Used in both **digital logic** and **analog switching**.
 
-SPICE netlists describe the circuit elements and connections for simulation.
+<img width="1342" height="585" alt="nmos-switch" src="https://github.com/user-attachments/assets/bcfadfa2-ff3f-4c10-9540-9a12d4259c5f" />
 
-![SPICE Netlist Diagram](https://github.com/user-attachments/assets/4fc554e4-fb2b-4eba-963f-4a7fdfa938b1)
+---
 
-```bash
-* Generated SPICE Netlist for NMOS Circuit
+### ⚙️ **Standard MOS Parameters**
 
-M1 vdd n1 0 0 nmos W=1.8u L=1.2u
-R1 in n1 55
-Vdd vdd 0 DC 2.5  
-Vin in 0 DC 2.5
+| Symbol | Parameter | Description |
+|:-------|:-----------|:-------------|
+| \( V_T \) | Threshold Voltage | Minimum gate voltage required for inversion |
+| \( V_{GS} \) | Gate–Source Voltage | Controls channel formation and current flow |
+| \( V_{DS} \) | Drain–Source Voltage | Determines operating region (Triode / Saturation) |
+| \( I_D \) | Drain Current | Output current dependent on \( V_{GS} \) and \( V_{DS} \) |
 
-.MODEL nmos NMOS (VTO=0.7 KP=120U GAMMA=0.5)
+<img width="1765" height="685" alt="mos-parameters" src="https://github.com/user-attachments/assets/403e35d2-9c9e-48c7-a6dc-9ea5ca1211b3" />  
 
-.OP
-.DC Vin 0 2.5 0.01
-.PRINT DC V(n1) I(R1)
-.END
-EOF
+---
+
+### 🧩 **Steps to Derive CMOS VTC**
+
+#### 🧠 **s1 — Convert PMOS Gate–Source Voltage to Input \( V_{in} \)**
+
+For PMOS:  
+\[
+V_{SG} = V_{DD} - V_{in}
+\]
+- PMOS **ON:** \( V_{SG} > |V_{TP}| \Rightarrow V_{in} < V_{DD} - |V_{TP}| \)  
+- PMOS **OFF:** \( V_{in} > V_{DD} - |V_{TP}| \)
+
+<img width="1187" height="970" alt="pmos-vsg" src="https://github.com/user-attachments/assets/108ed63d-0af0-4b19-b573-fdd25c0f193f" />  
+
+---
+
+#### 🧠 **s2 — Convert PMOS Drain–Source Voltage to Output \( V_{out} \)**
+
+For PMOS:  
+\[
+V_{SD} = V_{DD} - V_{out}
+\]
+- **Linear Region:** \( V_{SD} < V_{SG} - |V_{TP}| \)  
+- **Saturation:** \( V_{SD} \geq V_{SG} - |V_{TP}| \)
+
+---
+
+#### 🧠 **s3 — Convert NMOS Drain–Source Voltage to Output \( V_{out} \)**
+
+For NMOS:  
+\[
+V_{DS} = V_{out}
+\]
+- **Linear Region:** \( V_{DS} < V_{GS} - V_{TN} \)  
+- **Saturation:** \( V_{DS} \geq V_{GS} - V_{TN} \)
+
+<img width="1775" height="600" alt="nmos-vds" src="https://github.com/user-attachments/assets/c8fb15fa-4a12-455d-9dbc-4ba036aad5a4" />  
+
+---
+
+#### 🧩 **s4 — Merge Load Curves and Plot VTC**
+
+- Plot **I–V curves** for both NMOS and PMOS transistors.  
+- Find **intersections** where \( I_{DN} = I_{DP} \).  
+- Extract \( (V_{in}, V_{out}) \) pairs from intersection points.  
+- Draw the **VTC curve**, clearly showing **logic transition regions**.
+
+<img width="1800" height="1000" alt="cmos-vtc" src="https://github.com/user-attachments/assets/b789b099-a8ca-4697-bcc5-f80a4aae6096" />  
+
+---
+
+### ✅ **Conclusion**
+
+- **Velocity saturation** limits MOSFET drive current in **deep-submicron technologies**.  
+- **CMOS inverter VTC** analysis helps understand **switching thresholds** and **noise margins**.  
+- SPICE simulations confirm theoretical behavior for both **NMOS and PMOS** under velocity saturation effects.  
+
+---
+
+🧠 **Pro Tip:**  
+Experiment with different **W/L ratios** and **supply voltages** in SPICE to observe how **VTC shape** and **gain** change with device scaling.  
+
+---
