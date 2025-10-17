@@ -103,7 +103,7 @@
 ### 👨‍💻 Author
 **Harsh Shah**  
 RISC-V SoC Design Enthusiast | Aspiring VLSI Engineer  
-🔗 [LinkedIn](https://linkedin.com)  |  📧 harsh.shah@example.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/harsh-shah-51a10521b/)  |  📧 harsh2004shah@gmail.com  
 
 ---
 
