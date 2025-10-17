@@ -16,9 +16,9 @@ $ cd sky130CircuitDesignWorkshop/design/
 ### ▶️ Run the SPICE Simulation
 ```bash
 $ ngspice day3_inv_vtc_Wp084_Wn036.spice
-![VTC Graph](https://github.com/user-attachments/assets/3077606d-f1dd-4c13-bedd-5b8f4349d5f3)
-```
 
+```
+![VTC Graph](https://github.com/user-attachments/assets/3077606d-f1dd-4c13-bedd-5b8f4349d5f3)
 This command executes the SPICE netlist that defines a CMOS inverter circuit with:
 - **PMOS width (Wp)** = 0.84 µm  
 - **NMOS width (Wn)** = 0.36 µm  
