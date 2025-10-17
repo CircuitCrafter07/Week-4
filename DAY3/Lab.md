@@ -1,166 +1,130 @@
-# 🌍 RISC-V SoC Tapeout Program — VSD  
-## ⚡ CMOS Switching Threshold & Dynamic Simulations — Theory  
+# ⚙️ RISC-V SoC Tapeout Program — VSD  
+### CMOS Switching Threshold & Dynamic Simulations  
 
 ---
 
-### 🧩 **Voltage Transfer Characteristics (VTC) — SPICE Simulation**
-
-The **Voltage Transfer Characteristic (VTC)** of a CMOS inverter describes how the output voltage (**Vout**) changes with input voltage (**Vin**).  
-SPICE simulations help determine the **switching threshold**, **noise margins**, and **signal behavior** in different operating regions.
-
----
-
-### ⚙️ **SPICE Deck Overview**
-
-A **SPICE deck** is the input file used for circuit simulation.  
-It defines the device models, connections, and simulation commands.
-
-A SPICE deck typically includes:
-
-- Circuit component descriptions and connectivity  
-- Simulation types: `.DC`, `.AC`, `.TRAN`, etc.  
-- Output directives like `.PRINT`, `.PLOT`, or `.MEASURE`
-
-<img width="1690" height="727" alt="spice-deck" src="https://github.com/user-attachments/assets/008b8888-2743-46c8-9525-88ee7ce1338f" />
+## 📘 Table of Contents
+1. [Overview](#overview)
+2. [Part 1 — VTC Characteristics](#part-1--vtc-characteristics)
+3. [Part 2 — Transient Analysis](#part-2--transient-analysis)
+4. [Summary & Observations](#summary--observations)
+5. [Tools & Notes](#tools--notes)
 
 ---
 
-### ⚡ **Switching Threshold**
+## 🧠 Overview
 
-The **switching threshold (Vm)** is the input voltage at which:
+This lab explores the **Voltage Transfer Characteristics (VTC)** and **transient behavior** of a **CMOS inverter** using the **SkyWater 130nm PDK** and **Ngspice** simulator.  
+Through this experiment, we aim to:
 
-\[
-V_{in} = V_{out}
-\]
-
-- Also called the **trip point** or **metastable point**  
-- For symmetric CMOS inverters, it’s ideally around \( V_{dd}/2 \)  
-- Defines the inverter’s **logic transition region**
+- Determine the **switching threshold voltage**  
+- Evaluate **noise margins** for stable logic levels  
+- Measure **propagation delay and waveform response**  
 
 ---
 
-### 🧠 **CMOS Inverter Robustness**
+## 🔹 Part 1 — VTC Characteristics
+<details>
+<summary><b>🧩 Step-by-step Simulation</b></summary>
 
-A CMOS inverter is robust when its transfer characteristics remain stable under variations in **process, voltage,** and **temperature (PVT)**.
+### 📁 Step 1: Navigate to the Design Directory
+```bash
+$ cd sky130CircuitDesignWorkshop/design/
+```
 
-<img width="1765" height="750" alt="inverter-robustness" src="https://github.com/user-attachments/assets/919f1df2-1e5a-467a-b2f1-43d46bbd0231" />  
+### ▶️ Step 2: Run the SPICE Netlist
+```bash
+$ ngspice day3_inv_vtc_Wp084_Wn036.spice
+```
 
----
-
-### 🧮 **Current Equations**
-
-The drain currents in NMOS and PMOS during switching are given by:
-
-\[
-I_{dSN} = k_n \left[(V_m - V_t)V_{dsatN} - \frac{V_{dsatN}^2}{2}\right]
-\]
-
-\[
-I_{dSP} = k_p \left[(V_m - V_{dd} - V_t)V_{dsatP} - \frac{V_{dsatP}^2}{2}\right]
-\]
-
----
-
-### ⚖️ **Current Matching Condition**
-
-At equilibrium (trip point), NMOS and PMOS currents are equal:
-
-\[
-k_n \left[(V_m - V_t)V_{dsatN} - \frac{V_{dsatN}^2}{2}\right] =
-k_p \left[(-V_m + V_{dd} + V_t)V_{dsatP} - \frac{V_{dsatP}^2}{2}\right]
-\]
+**Inverter Configuration:**
+- **PMOS width (Wp):** 0.84 µm  
+- **NMOS width (Wn):** 0.36 µm  
+- Balanced inverter for near-midpoint switching.
 
 ---
 
-### 📈 **Switching Threshold Equation**
+### 📈 Step 3: Plot the Voltage Transfer Curve (VTC)
+```bash
+$ plot out vs in
+```
 
-\[
-V_m = \frac{R \cdot V_{dd}}{1 + R}
-\]
+#### 🖼️ Output:
+![VTC Graph](https://github.com/user-attachments/assets/3077606d-f1dd-4c13-bedd-5b8f4349d5f3)
 
-\[
-R = \frac{k_p \cdot V_{dsatP}}{k_n \cdot V_{dsatN}} =
-\frac{\left(\frac{W_P}{L_P}\right)k_p' V_{dsatP}}{\left(\frac{W_N}{L_N}\right)k_n' V_{dsatN}}
-\]
+**Interpretation:**
+- The **VTC curve** displays how the output voltage changes with input.  
+- Key parameters include:
+  - **V<sub>M</sub> (Switching Threshold)**
+  - **Noise Margins (NML, NMH)**
+  - **Transition Region (High Gain)**
 
----
-
-### 🧠 **Aspect Ratio Design**
-
-To balance rise and fall transitions, the ratio of transistor widths is tuned using:
-
-\[
-\frac{\left(\frac{W_P}{L_P}\right)}{\left(\frac{W_N}{L_N}\right)} =
-\frac{k_n' V_{dsatN} \left[(V_m - V_t) - \frac{V_{dsatN}}{2}\right]}
-{k_p' V_{dsatP} \left[(-V_m + V_{dd} + V_t) - \frac{V_{dsatP}}{2}\right]}
-\]
+</details>
 
 ---
 
-### 🌊 **Design Insights from PMOS & NMOS Sizing**
+## ⚡ Part 2 — Transient Analysis
+<details>
+<summary><b>⚙️ Simulation Steps</b></summary>
 
-#### 🔹 **Clock Inverter Design**
-- \( (W_p/L_p) = 2 \times (W_n/L_n) \)
-- Produces nearly equal **rise and fall times**  
-- Used in **clock buffers** and **critical timing paths**
+### ▶️ Step 1: Run the Transient SPICE Simulation
+```bash
+$ ngspice day3_inv_tran_Wp084_Wn036.spice
+```
 
----
-
-#### 🔹 **Data Path Inverters**
-- Designed with different aspect ratios to optimize **speed** or **power**.  
-- Used in **logic gates** and **combinational circuits**.
+This analysis captures **dynamic inverter response** under a square-wave input.
 
 ---
 
-### ⚙️ **Switching Threshold Trends**
+### 📊 Step 2: Plot Time-Domain Output
+```bash
+$ plot out vs time in
+```
 
-\[
-(W_p/L_p) = 2\times(W_n/L_n) \text{ or } 3\times(W_n/L_n) \Rightarrow \text{Moderate threshold}
-\]
+#### 🖼️ Output Waveforms:
+![Transient Output 1](https://github.com/user-attachments/assets/324f4f5b-cdd9-4580-a177-1e4697cfc7a6)
+![Transient Output 2](https://github.com/user-attachments/assets/0578767b-16db-4ac0-9f1a-f537d059bc34)
 
-\[
-(W_p/L_p) = 4\times(W_n/L_n) \text{ or } 5\times(W_n/L_n) \Rightarrow \text{Lower threshold (faster switching)}
-\]
+**Analysis:**
+- **V<sub>in</sub>** (Input) vs **V<sub>out</sub>** (Output) shows logic inversion.  
+- **Propagation delay (t<sub>pHL</sub>, t<sub>pLH</sub>)** indicates circuit switching speed.  
+- Rise and fall times reveal how capacitive loading impacts timing performance.  
 
----
-
-### ⚡ **PMOS Width Impact**
-
-- Increasing \( W_p/L_p \) reduces **rise delay**  
-- Larger PMOS area delivers more **charging current**  
-- Faster output transition and improved performance  
+</details>
 
 ---
 
-### 🧩 **On-Resistance Relationship**
+## 📊 Summary & Observations
 
-\[
-R_{on}(PMOS) \approx 2.5 \times R_{on}(NMOS)
-\]
+| Parameter | Description | Typical Result |
+|------------|--------------|----------------|
+| **V<sub>M</sub>** | Switching threshold voltage | ≈ 0.9 V (for 1.8 V supply) |
+| **Noise Margins** | Logic stability range | Sufficient for robust logic |
+| **t<sub>pHL</sub> / t<sub>pLH</sub>** | Propagation delays | Few nanoseconds |
+| **Output Waveform** | Logic inversion | Clean, sharp transitions |
 
-This indicates that PMOS must be **wider** than NMOS for balanced rise and fall times.
-
----
-
-### 🕒 **Applications in STA and Clock Tree Synthesis**
-
-- **Static Timing Analysis (STA):**  
-  Inverters serve as **reference delay cells** for setup/hold timing calculations.  
-
-- **Clock Tree Synthesis (CTS):**  
-  Used as **clock buffers** for signal restoration, skew balancing, and delay control.
+✅ **Conclusion:**  
+The CMOS inverter demonstrates strong logic integrity, good noise margins, and reliable switching — ideal for integration into SoC-level logic gates.
 
 ---
 
-### ✅ **Conclusion**
+## 🧰 Tools & Notes
 
-- The **switching threshold (Vm)** defines the logic transition region.  
-- Balanced **Wp/Wn sizing** ensures symmetrical delay and improved noise margins.  
-- SPICE simulations validate theoretical analysis of **static CMOS inverter characteristics**.  
+**Tools Used:**
+- 🧠 *SkyWater 130nm PDK*  
+- ⚡ *Ngspice Circuit Simulator*  
+- 💻 *Linux Terminal / VS Code Environment*  
+
+**Pro Tips:**
+- Adjust **W<sub>p</sub> / W<sub>n</sub>** ratio to tweak the switching threshold.  
+- Modify supply voltage (VDD) to study power-delay trade-offs.  
+- Use finer time steps (`.tran 0.1n 50n`) for more detailed transient plots.
 
 ---
 
-🧠 **Pro Tip:**  
-Adjust **Wp/Wn ratio** and **Vdd** in SPICE simulations to observe how **trip voltage** and **transition slope** change.
+> 💡 **Experiment Further:**  
+> Try cascading two inverters to visualize logic buffering and measure delay propagation through multiple stages.
 
 ---
+
+**© 2025 — VLSI System Design (VSD) Lab**
