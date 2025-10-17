@@ -42,7 +42,7 @@ $ plot -vdd#branch
 
 The plotted curve demonstrates how **Ids** initially increases linearly with **Vds**, then gradually saturates due to **velocity saturation**.
 
-![day2-1](https://github.com/user-attachments/assets/4160a1ef-7983-4cef-8599-45cffdd656a6)
+![day2-1](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY2/Screenshot%20from%202025-10-16%2018-56-25.png)
 
 ---
 
@@ -60,7 +60,7 @@ $ ngspice day2_nfet_idvgs_L015_W039.spice
 
 The SPICE output file shows Ids–Vds characteristics under specific **Vgs** values for short-channel NMOS.
 
-![day2-4](https://github.com/user-attachments/assets/21c84e62-de8e-4882-aed8-d9dd557eeef9)
+![day2](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY2/Screenshot%20from%202025-10-17%2009-46-14.png)
 
 ---
 
@@ -80,7 +80,7 @@ This plot reveals that for short-channel devices:
 - **Current saturates early**, even at moderate **Vds** values.  
 - The **saturation region** is limited by **carrier velocity** rather than channel pinch-off.  
 
-![day2-2](https://github.com/user-attachments/assets/00f2e170-de56-42b8-b7c4-0025dfd1680d)
+![day2-2](https://github.com/CircuitCrafter07/Week-4/blob/main/DAY2/VT_0.77v.png)
 
 ---
 
